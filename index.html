@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Breast Cancer Risk Predictor</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+  
+
+   <div class="container">
+        <h1 class="main-title">Breast Cancer Risk Analysis</h1>
+
+    <p>
+      Breast cancer is one of the most common cancers worldwide. 
+      <br>
+      This tool uses a trained Support Vector Machine (SVM) model to give an 
+      <br>
+      <b>indicative risk assessment </b>based on medical parameters.  
+      <br>
+      <b> ⚠️ Note: This is for educational purposes only, not medical advice.</b>
+    </p>
+
+    <!-- Prediction Form -->
+    <form action="/predict" method="POST">
+      <h2>Enter Parameters</h2>
+      <button type="button" onclick="startRecognition()">🎤 Speak</button>
+
+<script>
+function startRecognition() {
+    const recognition = new (window.SpeechRecognition || window.webkitSpeechRecognition)();
+    recognition.lang = 'en-US';
+
+    recognition.onresult = function(event) {
+        let speech = event.results[0][0].transcript;
+        alert("You said: " + speech);
+        
+        // Example: you could parse numbers from speech
+        document.querySelector("input[name='mean radius']").value = speech;
+    };
+
+    recognition.start();
+}
+</script>
+
+      <label>Mean Radius: <input type="number" step="any" name="mean radius" required></label>
+      <label>Mean Texture: <input type="number" step="any" name="mean texture" required></label>
+      <label>Mean Perimeter: <input type="number" step="any" name="mean perimeter" required></label>
+      <label>Mean Area: <input type="number" step="any" name="mean area" required></label>
+      <label>Mean Smoothness: <input type="number" step="any" name="mean smoothness" required></label>
+      <button type="submit">Predict Risk</button>
+    </form>
+  </div>
+
+  <!-- Reference Table Section -->
+  <div class="container table-section">
+    <h2>📊 Typical Feature Ranges</h2>
+    <p>These ranges show how certain features usually differ between <strong>benign</strong> and <strong>malignant</strong> tumors:</p>
+    <table>
+      <thead>
+        <tr>
+          <th>Feature</th>
+          <th>Benign (non-cancerous)</th>
+          <th>Malignant (cancerous)</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Mean Radius</td>
+          <td>6 - 14</td>
+          <td>15 - 30</td>
+        </tr>
+        <tr>
+          <td>Mean Texture</td>
+          <td>10 - 20</td>
+          <td>15 - 40</td>
+        </tr>
+        <tr>
+          <td>Mean Perimeter</td>
+          <td>40 - 100</td>
+          <td>100 - 200</td>
+        </tr>
+        <tr>
+          <td>Mean Area</td>
+          <td>200 - 600</td>
+          <td>600 - 2500</td>
+        </tr>
+        <tr>
+          <td>Mean Smoothness</td>
+          <td>0.05 - 0.1</td>
+          <td>0.1 - 0.2</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</body>
+</html>
